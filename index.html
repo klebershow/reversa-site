@@ -101,6 +101,20 @@
       box-shadow: 0 0 20px rgba(201,168,76,0.2) !important;
     }
     .nav-cta::after { display: none !important; }
+    .nav-login {
+      background: var(--gold) !important; color: #0a1628 !important;
+      border: 1px solid var(--gold) !important;
+      padding: 9px 22px; border-radius: 2px;
+      font-size: 13px !important; letter-spacing: 1.8px !important;
+      font-weight: 700 !important;
+      transition: all 0.3s !important;
+      margin-left: 6px;
+    }
+    .nav-login:hover {
+      background: var(--gold-light) !important;
+      box-shadow: 0 0 20px rgba(201,168,76,0.3) !important;
+    }
+    .nav-login::after { display: none !important; }
 
     .gold-line {
       display: block; width: 60px; height: 1px;
@@ -612,6 +626,7 @@
     <li><a href="#processo">Processo</a></li>
     <li><a href="#diferenciais">Diferenciais</a></li>
     <li><a href="#cta" class="nav-cta">Fale Conosco</a></li>
+    <li><a href="https://reversa-kohl.vercel.app/login" class="nav-login" target="_blank">Acessar Sistema</a></li>
   </ul>
 </nav>
 
