@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { overflow-x: hidden; }
 
     :root {
       --gold:        #90CAF9;
@@ -48,7 +49,7 @@
     nav {
       position: fixed; top: 0; width: 100%; z-index: 1000;
       padding: 22px 70px;
-      display: flex; align-items: center; justify-content: space-between;
+      display: flex; align-items: center; gap: 34px;
       background: rgba(14,25,41,0.82);
       backdrop-filter: blur(24px);
       border-bottom: 1px solid rgba(144,202,249,0.12);
@@ -73,8 +74,16 @@
     .marca-ini { font-size: 1.282em; }
     .nav-cta, .nav-login { white-space: nowrap; }
 
-    nav { gap: 30px; }
-    .nav-links { display: flex; gap: clamp(16px, 2.2vw, 38px); list-style: none; align-items: center; }
+    .nav-links { display: flex; gap: clamp(16px, 2.2vw, 30px); list-style: none; align-items: center; }
+    /* as acoes empurram pra ponta direita; o menu fica colado na marca */
+    .nav-acoes { display: flex; gap: 12px; list-style: none; align-items: center; margin-left: auto; }
+    /* os botoes sairam de .nav-links, entao precisam da mesma base tipografica
+       que aquela regra dava (sem sublinhado, Inter, caixa alta) */
+    .nav-acoes a {
+      text-decoration: none; font-family: 'Inter', sans-serif;
+      font-size: 13px; font-weight: 400; letter-spacing: 1.6px;
+      text-transform: uppercase; transition: all 0.3s;
+    }
     .nav-links a {
       color: var(--gray-light); text-decoration: none;
       font-family: 'Inter', sans-serif;
@@ -582,6 +591,38 @@
     .d1 { transition-delay: 0.1s; } .d2 { transition-delay: 0.2s; }
     .d3 { transition-delay: 0.3s; } .d4 { transition-delay: 0.4s; }
 
+    /* ─── MENU DO CELULAR ─── */
+    .nav-burger {
+      display: none; background: none; border: none; cursor: pointer;
+      width: 30px; height: 24px; padding: 0; margin-left: auto;
+      flex-direction: column; justify-content: space-between;
+    }
+    .nav-burger span { display: block; height: 2px; width: 100%; background: #fff; border-radius: 2px; transition: transform 0.3s ease, opacity 0.2s ease; }
+    .nav-burger.aberto span:nth-child(1) { transform: translateY(11px) rotate(45deg); }
+    .nav-burger.aberto span:nth-child(2) { opacity: 0; }
+    .nav-burger.aberto span:nth-child(3) { transform: translateY(-11px) rotate(-45deg); }
+    .nav-mobile {
+      display: none; position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+      padding: 84px 24px 28px;
+      background: rgba(14,25,41,0.98); backdrop-filter: blur(24px);
+      border-bottom: 1px solid rgba(144,202,249,0.15);
+      flex-direction: column; gap: 4px;
+    }
+    .nav-mobile a {
+      font-family: 'Inter', sans-serif; font-size: 15px; letter-spacing: 1.2px;
+      text-transform: uppercase; color: var(--gray-light); text-decoration: none;
+      padding: 14px 4px; border-bottom: 1px solid rgba(144,202,249,0.08);
+    }
+    .nav-mobile a:last-child { border-bottom: none; }
+    .nav-mobile .nav-mobile-cta {
+      margin-top: 16px; text-align: center; border: 1px solid rgba(144,202,249,0.5);
+      color: var(--gold); border-radius: 2px; padding: 13px;
+    }
+    .nav-mobile .nav-mobile-login {
+      margin-top: 10px; text-align: center; background: var(--gold);
+      color: var(--dark); font-weight: 700; border-radius: 2px; padding: 13px;
+    }
+
     /* ─── RESPONSIVE ─── */
     @media (max-width: 1250px) {
       nav { padding: 20px 34px; }
@@ -598,7 +639,9 @@
     @media (max-width: 1200px) { .servicos-grid { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 900px) {
       nav { padding: 16px 24px; } nav.scrolled { padding: 12px 24px; }
-      .nav-links { display: none; }
+      .nav-links, .nav-acoes { display: none; }
+      .nav-burger { display: flex; }
+      .nav-mobile[data-aberto="1"] { display: flex; }
       section { padding: 70px 24px; }
       #hero { padding: 120px 24px 70px; }
       #sobre { grid-template-columns: 1fr; gap: 44px; }
@@ -641,10 +684,25 @@
     <li><a href="#equipe">Equipe</a></li>
     <li><a href="#processo">Processo</a></li>
     <li><a href="#diferenciais">Diferenciais</a></li>
+  </ul>
+  <ul class="nav-acoes">
     <li><a href="#cta" class="nav-cta">Fale Conosco</a></li>
     <li><a href="https://sistema.reversacapital.com.br/login" class="nav-login" target="_blank">Acessar Sistema</a></li>
   </ul>
+  <button class="nav-burger" id="navBurger" aria-label="Abrir menu" aria-expanded="false" aria-controls="navMobile">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<div class="nav-mobile" id="navMobile" hidden>
+  <a href="#servicos">Serviços</a>
+  <a href="#sobre">Sobre</a>
+  <a href="#equipe">Equipe</a>
+  <a href="#processo">Processo</a>
+  <a href="#diferenciais">Diferenciais</a>
+  <a href="#cta" class="nav-mobile-cta">Fale Conosco</a>
+  <a href="https://sistema.reversacapital.com.br/login" class="nav-mobile-login" target="_blank">Acessar Sistema</a>
+</div>
 
 <!-- ═══════════════════════ HERO ═══════════════════════ -->
 <section id="hero">
@@ -939,6 +997,33 @@
 </footer>
 
 <script>
+  // Menu do celular: abaixo de 900px o menu do desktop some, entao o
+  // hamburguer e a unica navegacao disponivel.
+  const burger = document.getElementById('navBurger');
+  const menuMobile = document.getElementById('navMobile');
+  const fecharMenu = () => {
+    menuMobile.removeAttribute('data-aberto');
+    menuMobile.hidden = true;
+    burger.classList.remove('aberto');
+    burger.setAttribute('aria-expanded', 'false');
+    burger.setAttribute('aria-label', 'Abrir menu');
+    document.body.style.overflow = '';
+  };
+  const abrirMenu = () => {
+    menuMobile.hidden = false;
+    menuMobile.setAttribute('data-aberto', '1');
+    burger.classList.add('aberto');
+    burger.setAttribute('aria-expanded', 'true');
+    burger.setAttribute('aria-label', 'Fechar menu');
+    document.body.style.overflow = 'hidden';
+  };
+  burger.addEventListener('click', () => {
+    if (menuMobile.hasAttribute('data-aberto')) fecharMenu(); else abrirMenu();
+  });
+  menuMobile.querySelectorAll('a').forEach(a => a.addEventListener('click', fecharMenu));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') fecharMenu(); });
+  window.addEventListener('resize', () => { if (window.innerWidth > 900) fecharMenu(); });
+
   const navbar = document.getElementById('navbar');
   window.addEventListener('scroll', () => {
     navbar.classList.toggle('scrolled', window.scrollY > 50);
